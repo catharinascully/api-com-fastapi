@@ -9,14 +9,13 @@ class Database:
         load_dotenv()
         self.host: str = getenv('DB_HOST')
         self.username: str = getenv('DB_USER')
-        self.password: str = getenv('BD_PSWD')
-        self.database: str = getenv('DB_DATABASE')
+        self.password: str = getenv('DB_PSWD')
+        self.database: str = getenv('DB_NAME')
         self.connection: Optional[MySQLConnection] = None # Inicialização da conexão
         self.cursor: Optional[List[dict]] = None # Inicialização do cursor
 
     def conectar(self) -> None:
         """Estabelece uma conexão com o banco de dados."""
-
         try: 
             self.connection = mc.connect(
                 host = self.host,
@@ -26,7 +25,8 @@ class Database:
             )
             if self.connection.is_connected():
                 self.cursor = self.connection.cursor(dictionary=True)
-                print("Conexão ao banco de dados realizada com sucesso!")
+                print('Conexão ao banco de dados realizada com sucesso!')
+
         except Error as e:
             print(f'Erro de conexão: {e}')
             self.connection = None
@@ -40,7 +40,7 @@ class Database:
             self.connection.close()
         print("Conexão com o banco de dados encerrada com sucesso!")
 
-    def executar(self, sql: str, params: Optional[Tuple[Any, ...]] = None, fetch: bool = False) -> Optional[List[dict]]:
+    def executar(self, sql: str, params: Optional[Tuple[Any, ...]] = None) -> Optional[List[dict]]:
         """Executa uma instrução no banco de dados."""
         if self.connection is None and self.cursor is None:
             print("Conexão ao banco de dados não estabelecida.")
@@ -48,12 +48,11 @@ class Database:
 
         try: 
             self.cursor.execute(sql, params)
-            if fetch:
-                self.cursor.fetchall()
+            if sql.upper().startswith("SELECT"):
+                return self.cursor.fetchall()
             else:
                 self.connection.commit()
                 return self.cursor
         except Error as e:
             print(f"Erro de conexão: {e}")
             return None
-
