@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from model.database import Database
 from model.models import Serie, Ator, Categoria, Motivo, Avaliacao
 
@@ -97,8 +97,12 @@ def atualizar_serie(id_serie: int, serie: Serie):
 def atualizar_ator(id_ator: int, ator: Ator):
     db.conectar()
     sql = "UPDATE ator SET nome = %s WHERE id_ator = %s"
-    db.executar(sql, (ator.nome, id_ator))
-    db.desconectar
+    atualizacao = db.executar(sql, (ator.nome, id_ator))
+    db.desconectar()
+
+    if atualizacao == 0:
+        raise HTTPException(status_code=404, detail="Ator não encontrado")
+
     return {"mensagem": "Ator atualizado com sucesso"}
 
 @app.put('/categorias/{id_categoria}')
