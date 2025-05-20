@@ -53,6 +53,6 @@ class Database:
             else:
                 self.connection.commit()
                 return self.cursor
-        except Error as e:
+        except Exception as e:
             print(f"Erro de conexão: {e}")
-            return None
+            raise e
