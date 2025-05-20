@@ -4,17 +4,6 @@ from model.models import Serie, Ator, Categoria, Motivo, Avaliacao
 
 app = FastAPI()
 db = Database()
-
- 
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from data.database import Database
-from model.models import Serie, Ator, Categoria, Motivo, Avaliacao
- 
-db = Database()
-app = FastAPI()
- 
-series_db = [] #Lista que simula um banco de dados
  
 @app.post('/serie/')
 def cadastrar(serie: Serie):
