@@ -59,17 +59,17 @@ class Database:
             print(f"Erro ao executar SQL: {e}")
             return None
  
-    def fetchone(self) -> Optional[dict]:
-        """Retorna o próximo resultado da consulta."""
-        if self._cursor:
-            return self._cursor.fetchone()
-        return None
+    # def fetchone(self) -> Optional[dict]:
+    #     """Retorna o próximo resultado da consulta."""
+    #     if self._cursor:
+    #         return self._cursor.fetchone()
+    #     return None
  
-    def fetchall(self) -> Optional[List[dict]]:
-        """Retorna todos os resultados da consulta."""
-        if self._cursor:
-            return self._cursor.fetchall()
-        return None
+    # def fetchall(self) -> Optional[List[dict]]:
+    #     """Retorna todos os resultados da consulta."""
+    #     if self._cursor:
+    #         return self._cursor.fetchall()
+    #    return None
  
     def is_connected(self) -> bool:
         """Verifica se a conexão está ativa."""
